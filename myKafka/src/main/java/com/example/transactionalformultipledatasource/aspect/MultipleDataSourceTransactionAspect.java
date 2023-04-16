@@ -1,7 +1,8 @@
 package com.example.transactionalformultipledatasource.aspect;
 
 import com.example.transactionalformultipledatasource.anno.MultipleDataSourceTransactional;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -68,7 +69,7 @@ public class MultipleDataSourceTransactionAspect {
             // 获取事务的状态
             TransactionStatus transactionStatus = transactionManager.getTransaction(defaultTransactionDefinition);
             // 将事务管理器和事务的状态放入栈中
-           pairStack.push(new Pair<>(transactionManager, transactionStatus));
+           pairStack.push(new ImmutablePair<>(transactionManager, transactionStatus));
             // pairStack.put(transactionManager, transactionStatus);
         }
         // 将存入了事务管理器和事务状态的栈放入线程安全的数组中

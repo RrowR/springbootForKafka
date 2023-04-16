@@ -26,11 +26,8 @@ public class KafkaController {
     private KafkaListenerEndpointRegistry registry;
 
     @KafkaListener(id = "mygroup", topics = "test")
-    public void listen(ConsumerRecords<String,String> records, Acknowledgment acknowledgment) {
-        records.forEach(record -> {
-            log.info("topic = {}, offset = {}, value = {}", record.topic(), record.offset(), record.value());
-        });
-        acknowledgment.acknowledge();
+    public void listen(String msg) {
+        System.out.println(msg);
     }
 
     @GetMapping("/send/{input}")

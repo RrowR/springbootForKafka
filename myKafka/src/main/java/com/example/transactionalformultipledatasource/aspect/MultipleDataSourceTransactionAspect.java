@@ -84,11 +84,16 @@ public class MultipleDataSourceTransactionAspect {
     @AfterReturning("pointCut()")
     public void afterReturning() {
 //        Stack<Pair<DataSourceTransactionManager, TransactionStatus>> pairStack = THREAD_LOCAL.get();
-        Map<DataSourceTransactionManager, TransactionStatus> map = THREAD_LOCAL.get();
-        for (Map.Entry<DataSourceTransactionManager, TransactionStatus> entry : map.entrySet()) {
-            DataSourceTransactionManager mapKey = entry.getKey();
-            TransactionStatus mapValue = entry.getValue();
-            mapKey.commit(mapValue);
+        try {
+            Map<DataSourceTransactionManager, TransactionStatus> map = THREAD_LOCAL.get();
+            for (Map.Entry<DataSourceTransactionManager, TransactionStatus> entry : map.entrySet()) {
+                DataSourceTransactionManager mapKey = entry.getKey();
+                TransactionStatus mapValue = entry.getValue();
+                mapKey.commit(mapValue);
+            }
+            THREAD_LOCAL.remove();
+        } catch (TransactionException e) {
+            log.error("提交事务失败", e);
         }
 
         // 遍历栈，提交事务

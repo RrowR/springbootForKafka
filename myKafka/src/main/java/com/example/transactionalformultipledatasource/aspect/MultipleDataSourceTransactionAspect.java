@@ -8,10 +8,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +82,7 @@ public class MultipleDataSourceTransactionAspect {
      * 在方法执行完毕后，提交事务
      */
     @AfterReturning("pointCut()")
-    public void afterReturning() {
+    public void afterReturning() throws IOException {
 //        Stack<Pair<DataSourceTransactionManager, TransactionStatus>> pairStack = THREAD_LOCAL.get();
         try {
             Map<DataSourceTransactionManager, TransactionStatus> map = THREAD_LOCAL.get();
@@ -92,8 +92,9 @@ public class MultipleDataSourceTransactionAspect {
                 mapKey.commit(mapValue);
             }
             THREAD_LOCAL.remove();
-        } catch (TransactionException e) {
+        } catch (Exception e) {
             log.error("提交事务失败", e);
+            // throw new RuntimeException("提交事务失败");
         }
 
         // 遍历栈，提交事务
@@ -120,8 +121,9 @@ public class MultipleDataSourceTransactionAspect {
                 mapKey.rollback(mapValue);
             }
             THREAD_LOCAL.remove();
-        } catch (TransactionException e) {
+        } catch (Exception e) {
             log.error("事务回滚失败", e);
+            // throw new RuntimeException("提交事务失败");
         }
 
         // 遍历栈，回滚事务

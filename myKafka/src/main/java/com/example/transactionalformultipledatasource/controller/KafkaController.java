@@ -28,7 +28,11 @@ public class KafkaController {
         System.out.println(msg);
         String[] split = msg.split(",");
         log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
-        userService.insert(split[0], split[1]);
+        try {
+            userService.insert(split[0], split[1]);
+        } catch (Exception e) {
+            log.info("userService捕获到了这个异常");
+        }
         log.info("收到数据并执行了");
     }
 

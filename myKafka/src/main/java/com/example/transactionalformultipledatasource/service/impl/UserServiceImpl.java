@@ -32,7 +32,11 @@ public class UserServiceImpl implements UserService {
         db1Mapper.insert(username + ++i,password);
         db2Mapper.insert(username + ++i,password);
         db3Mapper.insert(username + ++i,password);
-        // int j = i/0;
+        try {
+            // int j = i/0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return i;
     }
 }

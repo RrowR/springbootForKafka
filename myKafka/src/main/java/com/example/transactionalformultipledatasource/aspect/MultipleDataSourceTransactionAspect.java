@@ -119,6 +119,7 @@ public class MultipleDataSourceTransactionAspect {
            // 回滚事务
            pair.getKey().rollback(pair.getValue());
        }
+       THREAD_LOCAL.remove();
     }
 
 }

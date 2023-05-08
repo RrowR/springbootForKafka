@@ -29,12 +29,14 @@ public class KafkaController {
         String[] split = msg.split(",");
         log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
         userService.insert(split[0], split[1]);
+
         log.info("收到数据并执行了");
     }
 
     @GetMapping("/send/{input}")
     public void sendMsg(@PathVariable String input) {
         kafkaTemplate.send("test", input);
+
         log.info("成功发送了数据....");
     }
 

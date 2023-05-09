@@ -1,6 +1,7 @@
 package com.example.transactionalformultipledatasource.aspect;
 
 import com.example.transactionalformultipledatasource.anno.MultipleDataSourceTransactional;
+import com.example.transactionalformultipledatasource.common.Const;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.aspectj.lang.annotation.*;
@@ -35,6 +36,9 @@ public class MultipleDataSourceTransactionAspect {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private Const c;
+
     // 申明一个事务对象
     private DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
 
@@ -59,7 +63,9 @@ public class MultipleDataSourceTransactionAspect {
     @Before("pointCut() && @annotation(transactional)")
     public void before(MultipleDataSourceTransactional transactional) {
         // 从注解里获取事务管理器的名字
-        String[] transactionManagerNames = transactional.transactionManagers();
+        // String[] transactionManagerNames = transactional.transactionManagers();
+        String config = c.getConfig();
+        String[] transactionManagerNames = config.split(",");
         // 创建一个栈
        Stack<Pair<DataSourceTransactionManager, TransactionStatus>> pairStack = new Stack<>();
         // HashMap<DataSourceTransactionManager, TransactionStatus> pairStack = new HashMap<>();

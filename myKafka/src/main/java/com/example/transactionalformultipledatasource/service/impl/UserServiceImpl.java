@@ -6,7 +6,6 @@ import com.example.transactionalformultipledatasource.mapper.mapper2.Db2Mapper;
 import com.example.transactionalformultipledatasource.mapper.mapper3.Db3Mapper;
 import com.example.transactionalformultipledatasource.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,12 +25,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private Db3Mapper db3Mapper;
 
-    @Value("${kafka.transaction.managers}")
-    private String[] transactions;
-
     @Override
     // 如何把上面的字符串数组传到下面的注解里去
-    @MultipleDataSourceTransactional(transactionManagers = {"${kafka.transaction.managers}"})
+    @MultipleDataSourceTransactional
     public int insert(String username, String password) {
         int i = 0;
         db1Mapper.insert(username + ++i,password);

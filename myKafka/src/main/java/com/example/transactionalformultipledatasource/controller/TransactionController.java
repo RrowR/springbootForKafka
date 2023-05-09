@@ -25,7 +25,7 @@ public class TransactionController {
     private Db3Mapper db3Mapper;
 
     @GetMapping("/testInsert")
-    @MultipleDataSourceTransactional(transactionManagers = {"transactionManager1","transactionManager2","transactionManager3"})
+    @MultipleDataSourceTransactional
     public String testInsert(String username,String password){
         int i = 0;
         db1Mapper.insert(username + ++i,password);

@@ -26,9 +26,9 @@ public class KafkaController {
     @KafkaListener(id = "mygroup", topics = "test")
     public void listen(String msg) {
         System.out.println(msg);
-        String[] split = msg.split(",");
-        log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
-        userService.insert(split[0], split[1]);
+        // String[] split = msg.split(",");
+        // log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
+        // userService.insert(split[0], split[1]);
 
         log.info("收到数据并执行了");
     }
@@ -36,9 +36,9 @@ public class KafkaController {
     @GetMapping("/send/{input}")
     public void sendMsg(@PathVariable String input) {
         kafkaTemplate.send("test", input);
-        String[] split = input.split(",");
-        log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
-        userService.insert(split[0], split[1]);
+        // String[] split = input.split(",");
+        // log.info("收到了数据了 split[0] = {}, split[1] = {}", split[0], split[1]);
+        // userService.insert(split[0], split[1]);
         log.info("成功发送了数据....");
     }
 
